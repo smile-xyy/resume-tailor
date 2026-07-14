@@ -1,0 +1,6 @@
+interface:
+  display_name: "可信简历改写"
+  short_description: "基于真实证据生成定制简历、开场白与可验证修改记录"
+  default_prompt: "Use $resume-tailor-write to tailor my resume without inventing facts."
+policy:
+  allow_implicit_invocation: false

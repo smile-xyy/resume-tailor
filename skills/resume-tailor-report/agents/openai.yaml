@@ -1,0 +1,6 @@
+interface:
+  display_name: "简历岗位报告"
+  short_description: "汇总五维评分、定制产物和待确认项为本地静态报告"
+  default_prompt: "Use $resume-tailor-report to build the final local HTML report for this run."
+policy:
+  allow_implicit_invocation: false

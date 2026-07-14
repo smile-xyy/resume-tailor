@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>岗位摘录器</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div>
+      <h1>岗位摘录器</h1>
+      <p id="count">0 个岗位</p>
+    </div>
+    <button id="clear" class="text-button" type="button">清空</button>
+  </header>
+
+  <main>
+    <div id="empty" class="empty">还没有收藏岗位。</div>
+    <div id="jobs" class="jobs"></div>
+  </main>
+
+  <footer>
+    <button id="export" class="primary" type="button">导出 jobs.json</button>
+  </footer>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

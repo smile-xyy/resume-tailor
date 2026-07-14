@@ -1,0 +1,11 @@
+.DS_Store
+.idea/
+output/
+data/jobs/inbox/*
+!data/jobs/inbox/example-job.json
+data/resume.md
+data/profile.md
+data/experience-bank.md
+data/resume.raw.md
+data/resume.star.md
+data/resume.md.hash

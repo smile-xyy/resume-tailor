@@ -1,0 +1,37 @@
+{
+  "source": {
+    "type": "screenshot",
+    "files": [
+      "anonymous-boss-job.png"
+    ]
+  },
+  "platform": "boss",
+  "title": "AI Agent 开发工程师",
+  "company": null,
+  "salary": "20-30K",
+  "location": "广州",
+  "education": null,
+  "experience": "1-3年",
+  "description": "负责 Agent 工作流设计、工具调用和业务系统接口开发。",
+  "requirements": "熟悉 Python、LangGraph、RAG 和 RESTful API。",
+  "tags": [
+    "Python",
+    "LangGraph",
+    "RAG"
+  ],
+  "benefits": [],
+  "hr_name": null,
+  "hr_active_status": null,
+  "url": null,
+  "needs_confirmation": [
+    "company",
+    "education",
+    "hr_name",
+    "hr_active_status",
+    "url"
+  ],
+  "excluded_content": [
+    "页面推荐岗位",
+    "平台聊天入口"
+  ]
+}

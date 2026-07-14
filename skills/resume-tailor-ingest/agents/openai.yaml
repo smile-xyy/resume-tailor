@@ -1,0 +1,6 @@
+interface:
+  display_name: "简历与岗位导入"
+  short_description: "清洗简历、拆解 STAR，并导入 JSON、文本或截图岗位"
+  default_prompt: "Use $resume-tailor-ingest to prepare my resume and normalize the supplied jobs."
+policy:
+  allow_implicit_invocation: false

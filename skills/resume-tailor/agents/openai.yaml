@@ -1,0 +1,6 @@
+interface:
+  display_name: "简历定制向导"
+  short_description: "逐步收集简历和岗位信息，生成经验证的本地 HTML 报告"
+  default_prompt: "/resume-tailor"
+policy:
+  allow_implicit_invocation: true

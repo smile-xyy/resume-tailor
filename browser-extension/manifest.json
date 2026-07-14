@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "岗位摘录器",
+  "version": "0.3.1",
+  "description": "保存 Boss、前程无忧、智联招聘和猎聘岗位详情并导出 Resume-Tailor jobs.json。",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://www.zhipin.com/*",
+    "https://sou.zhaopin.com/*",
+    "https://www.zhaopin.com/*",
+    "https://we.51job.com/*",
+    "https://jobs.51job.com/*",
+    "https://www.liepin.com/*"
+  ],
+  "action": {
+    "default_title": "岗位摘录器",
+    "default_popup": "popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.zhipin.com/*",
+        "https://sou.zhaopin.com/*",
+        "https://www.zhaopin.com/*",
+        "https://we.51job.com/*",
+        "https://jobs.51job.com/*",
+        "https://www.liepin.com/*"
+      ],
+      "js": [
+        "content/content.js"
+      ],
+      "css": [
+        "content/content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "lib/*.mjs"
+      ],
+      "matches": [
+        "https://www.zhipin.com/*",
+        "https://sou.zhaopin.com/*",
+        "https://www.zhaopin.com/*",
+        "https://we.51job.com/*",
+        "https://jobs.51job.com/*",
+        "https://www.liepin.com/*"
+      ]
+    }
+  ]
+}

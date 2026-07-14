@@ -1,0 +1,2036 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <title>简历岗位匹配报告</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #f2f5f3;
+      --surface: #ffffff;
+      --surface-subtle: #f8faf9;
+      --surface-hover: #f0f6f3;
+      --surface-active: #e8f3ef;
+      --text: #17211f;
+      --text-soft: #3f4d49;
+      --muted: #6c7773;
+      --faint: #8d9793;
+      --line: #e0e6e3;
+      --line-strong: #cbd5d1;
+      --accent: #0f766e;
+      --accent-strong: #0b5e58;
+      --accent-soft: #e8f4f0;
+      --blue: #376b9f;
+      --blue-soft: #edf4fa;
+      --amber: #966312;
+      --amber-soft: #fbf3e3;
+      --danger: #a6463d;
+      --danger-soft: #fbefed;
+      --code: #f1f5f3;
+      --shadow-paper: 0 1px 2px rgba(20, 36, 31, 0.05), 0 18px 46px rgba(20, 36, 31, 0.08);
+      --radius-sm: 7px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --motion-fast: 140ms;
+      --motion-normal: 220ms;
+      --motion-slow: 520ms;
+      --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+      --ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --header-height: 66px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--canvas); }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--canvas);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      text-rendering: optimizeLegibility;
+    }
+
+    button, input, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid rgba(15, 118, 110, 0.42);
+      outline-offset: 2px;
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      min-height: var(--header-height);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 11px 22px 10px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(251, 252, 251, 0.96);
+      animation: surface-enter 280ms var(--ease-standard) both;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-lockup {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 1px solid #cbe1da;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 14px;
+      font-weight: 760;
+      letter-spacing: -0.04em;
+    }
+
+    .app-header h1 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 720;
+      letter-spacing: -0.01em;
+    }
+
+    .run-meta {
+      max-width: min(880px, 62vw);
+      margin-top: 2px;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.4;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .header-count {
+      flex: 0 0 auto;
+      padding: 5px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr) 500px;
+      height: calc(100vh - var(--header-height));
+      min-height: 620px;
+      overflow: hidden;
+    }
+
+    .job-sidebar,
+    .resume-stage,
+    .inspector {
+      min-width: 0;
+      min-height: 0;
+    }
+
+    .job-sidebar {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--line);
+      background: #fafbfa;
+      animation: surface-enter 320ms 55ms var(--ease-standard) both;
+    }
+
+    .sidebar-head {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      flex: 0 0 auto;
+      padding: 17px 16px 13px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(250, 251, 250, 0.96);
+      backdrop-filter: blur(10px);
+    }
+
+    .panel-kicker {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 760;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .panel-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .panel-title h2,
+    .inspector-heading h2 {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 100px;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .filters input,
+    .filters select {
+      width: 100%;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text);
+      padding: 6px 9px;
+      font-size: 12px;
+      transition:
+        border-color var(--motion-fast) var(--ease-standard),
+        background-color var(--motion-fast) var(--ease-standard);
+    }
+
+    .filters input::placeholder { color: var(--faint); }
+    .filters input:hover, .filters select:hover { border-color: var(--line-strong); }
+    .filters input:focus, .filters select:focus { border-color: var(--accent); }
+
+    .job-list-scroll,
+    .resume-scroll,
+    .detail-scroll {
+      min-height: 0;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scroll-behavior: smooth;
+      scrollbar-color: #cdd5d1 transparent;
+      scrollbar-width: thin;
+    }
+
+    .job-list-scroll { padding: 8px 8px 18px; }
+
+    .job {
+      position: relative;
+      width: 100%;
+      display: block;
+      text-align: left;
+      padding: 10px 10px 10px 13px;
+      margin: 0 0 3px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      transition:
+        background-color var(--motion-fast) var(--ease-standard),
+        border-color var(--motion-fast) var(--ease-standard),
+        color var(--motion-fast) var(--ease-standard),
+        transform 80ms var(--ease-standard);
+    }
+
+    .job::before {
+      position: absolute;
+      inset: 9px auto 9px 0;
+      width: 3px;
+      border-radius: 0 3px 3px 0;
+      background: var(--accent);
+      content: "";
+      opacity: 0;
+      transform: scaleY(0.35);
+      transform-origin: center;
+      transition:
+        opacity var(--motion-fast) var(--ease-standard),
+        transform var(--motion-fast) var(--ease-standard);
+    }
+
+    .job:hover {
+      border-color: var(--line);
+      background: var(--surface-hover);
+    }
+
+    .job:active { transform: translateY(1px); }
+
+    .job[aria-current="true"] {
+      border-color: #cfe1db;
+      background: var(--surface-active);
+    }
+
+    .job[aria-current="true"]::before {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+
+    .job-top,
+    .job-meta,
+    .job-result {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .job-company {
+      min-width: 0;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 11.5px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .job-title {
+      margin-top: 3px;
+      overflow: hidden;
+      font-size: 13px;
+      font-weight: 680;
+      line-height: 1.45;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .job-meta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .tier-label { font-weight: 620; }
+
+    .score {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 22px;
+      padding: 0 7px;
+      border: 1px solid #c8dfd7;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 11px;
+      font-weight: 740;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score.strong { border-color: #bfddd2; background: #e7f4ef; color: #09624f; }
+    .score.viable { border-color: #ccdae7; background: var(--blue-soft); color: var(--blue); }
+    .score.stretch { border-color: #ead8b7; background: var(--amber-soft); color: var(--amber); }
+    .score.skip { border-color: #eccfca; background: var(--danger-soft); color: var(--danger); }
+
+    .resume-stage {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--line);
+      background: #eef2f0;
+      animation: surface-enter 360ms 110ms var(--ease-standard) both;
+    }
+
+    .resume-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 4;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex: 0 0 auto;
+      padding: 10px 22px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(247, 249, 248, 0.94);
+      backdrop-filter: blur(12px);
+    }
+
+    .resume-title-block { min-width: 0; }
+
+    .resume-toolbar h2 {
+      max-width: 100%;
+      margin: 0;
+      overflow: hidden;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.45;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .resume-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 8px;
+      border: 1px solid #bfddd2;
+      border-radius: var(--radius-sm);
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 12px;
+      font-weight: 680;
+      text-decoration: none;
+      transition:
+        color var(--motion-fast) var(--ease-standard),
+        background-color var(--motion-fast) var(--ease-standard),
+        border-color var(--motion-fast) var(--ease-standard),
+        transform 80ms var(--ease-standard);
+    }
+
+    .text-link:hover { border-color: var(--accent); background: #d9eee7; color: #07544e; }
+    .text-link:active { transform: translateY(1px); }
+
+    .text-link.pdf-link {
+      border-color: #9ebcdc;
+      background: var(--blue-soft);
+      color: #255b91;
+    }
+
+    .text-link.pdf-link:hover { border-color: var(--blue); background: #dfeef9; color: #174d82; }
+
+    .resume-scroll { padding: 30px 42px 54px; }
+
+    .resume-paper {
+      width: min(100%, 812px);
+      min-height: calc(100vh - var(--header-height) - 118px);
+      margin: 0 auto;
+      padding: 46px 52px 58px;
+      border: 1px solid #e1e6e3;
+      border-radius: 3px;
+      background: var(--surface);
+      box-shadow: var(--shadow-paper);
+    }
+
+    .inspector {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      animation: surface-enter 380ms 165ms var(--ease-standard) both;
+    }
+
+    .inspector-head {
+      flex: 0 0 auto;
+      padding: 15px 18px 10px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .inspector-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 28px;
+    }
+
+    .inspector-actions { flex: 0 0 auto; }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 11px;
+      padding: 0;
+      overflow: hidden;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      min-width: 0;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      padding: 6px 9px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 11.5px;
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition:
+        background-color var(--motion-fast) var(--ease-standard),
+        border-color var(--motion-fast) var(--ease-standard),
+        color var(--motion-fast) var(--ease-standard),
+        transform 80ms var(--ease-standard);
+    }
+
+    .tab:hover { border-color: var(--line-strong); color: var(--text); background: #f1f4f2; }
+    .tab:active { transform: translateY(1px); }
+    .tab[aria-selected="true"] {
+      border-color: #9fc8ba;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-weight: 680;
+      box-shadow: 0 1px 2px rgba(23, 33, 31, 0.05);
+    }
+
+    .detail-scroll {
+      padding: 18px 30px 40px 18px;
+      scrollbar-gutter: stable;
+    }
+
+    /* Keep inspector content clear of overlay scrollbars in Chromium/file:// reports. */
+    .detail-scroll > #detailView {
+      width: calc(100% - 24px);
+      max-width: calc(100% - 24px);
+      margin-right: 24px;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .markdown {
+      min-height: 120px;
+      overflow-wrap: anywhere;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .resume-paper.markdown {
+      color: #26312e;
+      font-size: 13.5px;
+      line-height: 1.75;
+    }
+
+    .markdown h1 {
+      margin: 0 0 20px;
+      color: var(--text);
+      font-size: 22px;
+      font-weight: 740;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    .resume-paper.markdown h1 {
+      font-size: 26px;
+      letter-spacing: 0.02em;
+    }
+
+    .markdown h2 {
+      margin: 25px 0 10px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 720;
+      line-height: 1.45;
+    }
+
+    .resume-paper.markdown h2 {
+      margin-top: 28px;
+      border-bottom-color: #d9dfdc;
+      font-size: 16px;
+    }
+
+    .markdown h3 {
+      margin: 20px 0 7px;
+      color: var(--text);
+      font-size: 13.5px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .resume-paper.markdown h3 { font-size: 14px; }
+
+    .markdown p,
+    .markdown ul,
+    .markdown ol,
+    .markdown blockquote { margin: 8px 0 13px; }
+
+    .markdown ul, .markdown ol { padding-left: 19px; }
+    .markdown li { margin: 4px 0; padding-left: 2px; }
+    .markdown li::marker { color: #83908b; }
+    .markdown strong { color: var(--text); font-weight: 680; }
+
+    .markdown blockquote {
+      padding: 10px 12px;
+      border-left: 3px solid #b9d8ce;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      background: var(--surface-subtle);
+      color: var(--muted);
+    }
+
+    .markdown table {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      margin: 12px 0 18px;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 12px;
+      white-space: normal;
+    }
+
+    .markdown tbody { display: table; width: 100%; border-collapse: collapse; }
+
+    .markdown th,
+    .markdown td {
+      min-width: 84px;
+      padding: 7px 9px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .markdown th { background: var(--surface-subtle); color: var(--text); font-weight: 680; }
+
+    .markdown code {
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: var(--code);
+      color: var(--accent-strong);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .markdown pre {
+      margin: 0;
+      padding: 14px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--code);
+      font-size: 12px;
+      line-height: 1.55;
+      white-space: pre;
+    }
+
+    .content-motion { animation: content-enter var(--motion-normal) var(--ease-standard) both; }
+
+    .score-summary { margin: 0 0 16px; }
+
+    .score-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 15px 16px;
+      border: 1px solid #d4e4df;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, #f5fbf8 0%, #edf7f3 100%);
+    }
+
+    .score-eyebrow {
+      display: block;
+      color: var(--accent-strong);
+      font-size: 10px;
+      font-weight: 760;
+      letter-spacing: 0.09em;
+    }
+
+    .score-total-line {
+      display: flex;
+      align-items: baseline;
+      margin-top: 2px;
+      line-height: 1;
+    }
+
+    .score-summary-total {
+      color: var(--text);
+      font-size: 34px;
+      font-weight: 760;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.05em;
+    }
+
+    .score-denominator { margin-left: 3px; color: var(--muted); font-size: 12px; }
+
+    .tier-pill {
+      padding: 5px 9px;
+      border: 1px solid #c9ddd6;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--accent-strong);
+      font-size: 11px;
+      font-weight: 680;
+      white-space: nowrap;
+    }
+
+    .tier-pill.viable { color: var(--blue); border-color: #cedae5; }
+    .tier-pill.stretch { color: var(--amber); border-color: #e8d7b8; }
+    .tier-pill.skip { color: var(--danger); border-color: #e9cfca; }
+
+    .score-caption {
+      margin: 8px 2px 15px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .dimension-grid { display: grid; gap: 10px; }
+
+    .dimension-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 5px 10px;
+      color: var(--text-soft);
+      font-size: 11.5px;
+    }
+
+    .dimension-value { color: var(--text); font-weight: 690; font-variant-numeric: tabular-nums; }
+
+    .score-progress {
+      grid-column: 1 / -1;
+      height: 5px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e7ece9;
+    }
+
+    .score-progress-fill {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 720ms var(--ease-emphasized);
+      transition-delay: var(--progress-delay, 0ms);
+    }
+
+    .progress-ready .score-progress-fill { transform: scaleX(var(--score-ratio)); }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+      margin: 16px 0;
+    }
+
+    .evidence-group {
+      min-width: 0;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface-subtle);
+      animation: summary-enter 280ms var(--ease-standard) both;
+      animation-delay: var(--summary-delay, 0ms);
+    }
+
+    .evidence-group[data-kind="risk"] { background: #fcfaf5; }
+    .evidence-group[data-kind="confirm"] { background: #f9f8fc; }
+    .evidence-group[data-wide="true"] { grid-column: 1 / -1; }
+
+    .evidence-group h3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin: 0 0 7px;
+      color: var(--text);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .evidence-count { color: var(--muted); font-size: 10px; font-weight: 620; }
+    .evidence-group ul { margin: 0; padding-left: 16px; font-size: 11.5px; line-height: 1.55; }
+    .evidence-group li { margin: 3px 0; }
+
+    .more-items { margin-top: 7px; }
+    .more-items summary,
+    .analysis-details > summary {
+      color: var(--accent-strong);
+      cursor: pointer;
+      font-size: 11.5px;
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      text-underline-offset: 3px;
+      transition:
+        color var(--motion-fast) var(--ease-standard),
+        text-decoration-color var(--motion-fast) var(--ease-standard);
+    }
+
+    .more-items summary:hover,
+    .analysis-details > summary:hover { text-decoration-color: currentColor; }
+    .more-items ul { margin-top: 6px; }
+
+    .analysis-details {
+      margin: 14px 0 0;
+      padding: 10px 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    .analysis-details[open] > summary { margin-bottom: 14px; }
+
+    .optimization-item {
+      margin: 8px 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .optimization-toggle {
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 4px 10px;
+      padding: 11px 12px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition:
+        background-color var(--motion-fast) var(--ease-standard),
+        color var(--motion-fast) var(--ease-standard),
+        transform 80ms var(--ease-standard);
+    }
+
+    .optimization-toggle:hover { background: var(--surface-hover); }
+    .optimization-toggle:active { transform: translateY(1px); }
+
+    .optimization-title { overflow: hidden; font-size: 12px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+    .optimization-priority { color: var(--accent); font-size: 10px; font-weight: 700; }
+    .optimization-summary { grid-column: 1 / -1; overflow: hidden; color: var(--muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+    .optimization-chevron {
+      grid-column: 2;
+      grid-row: 1;
+      color: var(--muted);
+      transition: transform var(--motion-normal) var(--ease-standard);
+    }
+
+    .optimization-item.is-open .optimization-chevron { transform: rotate(180deg); }
+
+    .optimization-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition:
+        grid-template-rows var(--motion-normal) var(--ease-standard),
+        opacity var(--motion-normal) var(--ease-standard);
+    }
+
+    .optimization-item.is-open .optimization-content { grid-template-rows: 1fr; opacity: 1; }
+    .optimization-content-inner { min-height: 0; overflow: hidden; }
+    .optimization-content-body { padding: 0 12px 12px; border-top: 1px solid var(--line); }
+    .optimization-content-body > :first-child { margin-top: 11px; }
+
+    .action-button,
+    .copy-mermaid,
+    .expand-mermaid,
+    .mermaid-dialog-button {
+      min-height: 30px;
+      padding: 5px 9px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text-soft);
+      cursor: pointer;
+      font-size: 11.5px;
+      font-weight: 630;
+      transition:
+        background-color var(--motion-fast) var(--ease-standard),
+        border-color var(--motion-fast) var(--ease-standard),
+        color var(--motion-fast) var(--ease-standard),
+        transform 80ms var(--ease-standard);
+    }
+
+    .action-button:hover, .copy-mermaid:hover, .expand-mermaid:hover, .mermaid-dialog-button:hover {
+      border-color: #9fc8ba;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+    }
+
+    .action-button:active, .copy-mermaid:active, .expand-mermaid:active, .mermaid-dialog-button:active { transform: translateY(1px); }
+    [data-status="success"] { border-color: #9bc7b7; color: var(--accent-strong); }
+    [data-status="failed"] { border-color: #dfb9b3; color: var(--danger); }
+
+    .mermaid-card {
+      position: relative;
+      margin: 14px 0 22px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: #fbfcfb;
+    }
+
+    .mermaid-toolbar {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 8px 6px 12px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-subtle);
+      color: var(--muted);
+      font-size: 10.5px;
+    }
+
+    .mermaid-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .mermaid-shell { position: relative; min-height: 180px; overflow-x: auto; }
+
+    .mermaid-loading {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: none;
+      place-items: center;
+      background: #fbfcfb;
+      color: var(--muted);
+      font-size: 11.5px;
+    }
+
+    .mermaid-card.is-loading .mermaid-loading { display: grid; }
+
+    .mermaid {
+      min-width: 680px;
+      padding: 22px 18px;
+      opacity: 0;
+      text-align: center;
+      transform: translateY(4px);
+      transition:
+        opacity 280ms var(--ease-standard),
+        transform 280ms var(--ease-standard);
+    }
+
+    .mermaid-card.is-rendered .mermaid { opacity: 1; transform: translateY(0); }
+    .mermaid svg { display: block; min-width: 650px; height: auto; margin: 0 auto; }
+
+    .mermaid-card.is-fallback .mermaid-shell { min-height: 0; }
+    .mermaid-card.is-fallback .mermaid {
+      min-width: 620px;
+      opacity: 1;
+      color: var(--text-soft);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.55;
+      text-align: left;
+      white-space: pre;
+      transform: none;
+    }
+
+    .mermaid-dialog {
+      width: min(1180px, calc(100vw - 64px));
+      height: min(820px, calc(100vh - 64px));
+      max-width: none;
+      max-height: none;
+      margin: auto;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: 0 24px 70px rgba(18, 32, 28, 0.24);
+    }
+
+    .mermaid-dialog::backdrop { background: rgba(20, 31, 28, 0.48); backdrop-filter: blur(2px); }
+
+    .mermaid-dialog-shell {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mermaid-dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 54px;
+      padding: 10px 14px 10px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-subtle);
+    }
+
+    .mermaid-dialog-title { margin: 0; color: var(--text); font-size: 14px; font-weight: 720; }
+    .mermaid-dialog-controls { display: flex; align-items: center; gap: 6px; }
+
+    .mermaid-zoom-value {
+      min-width: 42px;
+      color: var(--muted);
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+
+    .mermaid-dialog-button { min-width: 30px; padding-inline: 8px; }
+    .mermaid-dialog-close { margin-left: 5px; }
+
+    .mermaid-modal-viewport {
+      position: relative;
+      min-height: 0;
+      flex: 1;
+      overflow: hidden;
+      background:
+        linear-gradient(45deg, rgba(15, 118, 110, 0.035) 25%, transparent 25%) 0 0 / 20px 20px,
+        linear-gradient(-45deg, rgba(15, 118, 110, 0.035) 25%, transparent 25%) 0 0 / 20px 20px,
+        #fbfcfb;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .mermaid-modal-viewport.is-dragging { cursor: grabbing; }
+
+    .mermaid-modal-canvas {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      transform: translate3d(var(--pan-x, 0px), var(--pan-y, 0px), 0) scale(var(--modal-scale, 1));
+      transform-origin: center;
+      transition: transform var(--motion-fast) var(--ease-standard);
+      will-change: transform;
+    }
+
+    .mermaid-modal-viewport.is-dragging .mermaid-modal-canvas { transition: none; }
+    .mermaid-modal-canvas img { display: block; max-width: none; max-height: none; width: auto; height: auto; }
+
+    @media (max-width: 760px) {
+      .mermaid-dialog { width: calc(100vw - 24px); height: calc(100vh - 24px); }
+      .mermaid-dialog-header { align-items: flex-start; flex-direction: column; gap: 8px; }
+      .mermaid-dialog-controls { width: 100%; justify-content: flex-end; }
+    }
+
+    .empty {
+      color: var(--muted);
+      border: 1px dashed var(--line-strong);
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.56);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 100;
+      max-width: min(340px, calc(100vw - 40px));
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 13px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      box-shadow: 0 10px 30px rgba(23, 33, 31, 0.13);
+      color: var(--text-soft);
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(7px);
+      transition:
+        opacity var(--motion-normal) var(--ease-standard),
+        transform var(--motion-normal) var(--ease-standard);
+    }
+
+    .toast::before {
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      content: "✓";
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .toast[data-kind="error"]::before { background: var(--danger-soft); color: var(--danger); content: "!"; }
+    .toast.is-visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes surface-enter {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes content-enter {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes summary-enter {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1360px) {
+      .layout { grid-template-columns: 250px minmax(0, 1fr) 450px; }
+      .resume-scroll { padding-inline: 28px; }
+      .resume-paper { padding-inline: 44px; }
+      .detail-scroll { padding-left: 15px; padding-right: 28px; }
+    }
+
+    @media (max-width: 1120px) {
+      .layout {
+        grid-template-columns: 250px minmax(0, 1fr);
+        height: auto;
+        min-height: calc(100vh - var(--header-height));
+        overflow: visible;
+      }
+
+      .inspector {
+        grid-column: 1 / -1;
+        min-height: 620px;
+        border-top: 1px solid var(--line);
+      }
+
+      .job-sidebar, .resume-stage { height: calc(100vh - var(--header-height)); }
+      .detail-scroll { max-height: 780px; }
+    }
+
+    @media (max-width: 760px) {
+      :root { --header-height: 72px; }
+      .app-header { align-items: flex-start; padding-inline: 14px; }
+      .run-meta { max-width: 70vw; }
+      .header-count { display: none; }
+      .layout { display: block; }
+      .job-sidebar, .resume-stage { height: auto; min-height: 540px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .job-list-scroll { max-height: 420px; }
+      .resume-scroll { max-height: 780px; padding: 18px 12px 28px; }
+      .resume-paper { min-height: 0; padding: 30px 24px 40px; }
+      .resume-actions .text-link:not(.pdf-link) { display: none; }
+      .inspector { min-height: 620px; }
+      .detail-scroll > #detailView { width: 100%; max-width: 100%; margin-right: 0; }
+      .evidence-grid { grid-template-columns: 1fr; }
+      .evidence-group[data-wide="true"] { grid-column: auto; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+      }
+
+      .score-progress-fill { transform: scaleX(var(--score-ratio)); }
+    }
+  </style>
+</head>
+<body>
+  <script id="resume-tailor-data" type="application/json">__RESUME_TAILOR_DATA__</script>
+
+  <header class="app-header">
+    <div class="brand-lockup">
+      <div class="brand-mark" aria-hidden="true">RT</div>
+      <div>
+        <h1>简历定制工作台</h1>
+        <div class="run-meta" id="runMeta"></div>
+      </div>
+    </div>
+    <div class="header-count" id="jobCount"></div>
+  </header>
+
+  <div class="layout">
+    <aside class="job-sidebar" aria-label="岗位列表与筛选">
+      <div class="sidebar-head">
+        <span class="panel-kicker">Shortlist</span>
+        <div class="panel-title">
+          <h2>岗位优先级</h2>
+        </div>
+        <div class="filters">
+          <input id="jobSearch" type="search" placeholder="搜索岗位" aria-label="搜索公司或岗位">
+          <select id="tierFilter" aria-label="按推荐等级筛选">
+            <option value="">全部等级</option>
+            <option value="strong">优先投递</option>
+            <option value="viable">可以投递</option>
+            <option value="stretch">谨慎投递</option>
+            <option value="skip">暂缓投递</option>
+          </select>
+        </div>
+      </div>
+      <div class="job-list-scroll" id="jobList"></div>
+    </aside>
+
+    <main class="resume-stage" aria-label="定制简历预览">
+      <div class="resume-toolbar">
+        <div class="resume-title-block">
+          <span class="panel-kicker">Tailored resume</span>
+          <h2 id="resumeTitle">定制简历</h2>
+        </div>
+        <div class="resume-actions">
+          <a id="jobLink" class="text-link" href="#" target="_blank" rel="noreferrer" hidden>岗位信息链接</a>
+          <a id="pdfLink" class="text-link pdf-link" href="#" download hidden>导出 PDF</a>
+          <a id="atsLink" class="text-link" href="#" target="_blank">ATS 版本</a>
+          <span class="score" id="scoreBadge" aria-label="当前岗位匹配分">--</span>
+        </div>
+      </div>
+      <div class="resume-scroll" id="resumeScroll">
+        <article class="resume-paper markdown" id="resumeView"></article>
+      </div>
+    </main>
+
+    <section class="inspector" aria-label="匹配分析与优化建议">
+      <div class="inspector-head">
+        <div class="inspector-heading">
+          <div>
+            <span class="panel-kicker">AI Inspector</span>
+            <h2>分析与优化</h2>
+          </div>
+          <div class="inspector-actions" id="inspectorActions"></div>
+        </div>
+        <div class="tabs" role="tablist" aria-label="分析内容">
+          <button class="tab" id="tab-analysis" role="tab" data-tab="analysis" aria-controls="detailView" aria-selected="true" tabindex="0">匹配分析</button>
+          <button class="tab" id="tab-changelog" role="tab" data-tab="changelog" aria-controls="detailView" aria-selected="false" tabindex="-1">优化说明</button>
+          <button class="tab" id="tab-opener" role="tab" data-tab="opener" aria-controls="detailView" aria-selected="false" tabindex="-1">HR 开场白</button>
+          <button class="tab" id="tab-diagrams" role="tab" data-tab="diagrams" aria-controls="detailView" aria-selected="false" tabindex="-1">流程与架构图</button>
+          <button class="tab" id="tab-coverLetter" role="tab" data-tab="coverLetter" aria-controls="detailView" aria-selected="false" tabindex="-1">求职信</button>
+        </div>
+      </div>
+      <div class="detail-scroll" id="detailScroll">
+        <article class="markdown" id="detailView" role="tabpanel" aria-labelledby="tab-analysis" tabindex="0"></article>
+      </div>
+    </section>
+  </div>
+  <dialog class="mermaid-dialog" id="mermaidDialog" aria-labelledby="mermaidDialogTitle">
+    <div class="mermaid-dialog-shell">
+      <div class="mermaid-dialog-header">
+        <h2 class="mermaid-dialog-title" id="mermaidDialogTitle">Mermaid 图表预览</h2>
+        <div class="mermaid-dialog-controls" aria-label="图表缩放控制">
+          <button class="mermaid-dialog-button" id="mermaidZoomOut" type="button" aria-label="缩小图表">−</button>
+          <span class="mermaid-zoom-value" id="mermaidZoomValue">100%</span>
+          <button class="mermaid-dialog-button" id="mermaidZoomIn" type="button" aria-label="放大图表">＋</button>
+          <button class="mermaid-dialog-button" id="mermaidResetView" type="button">复位</button>
+          <button class="mermaid-dialog-button mermaid-dialog-close" id="mermaidDialogClose" type="button">关闭</button>
+        </div>
+      </div>
+      <div class="mermaid-modal-viewport" id="mermaidModalViewport" aria-label="可拖动查看的 Mermaid 图表">
+        <div class="mermaid-modal-canvas" id="mermaidModalCanvas"></div>
+      </div>
+    </div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    const raw = document.getElementById("resume-tailor-data").textContent;
+    const data = JSON.parse(raw);
+    let selectedId = data.jobs[0]?.id || "";
+    let selectedTab = "analysis";
+    let renderEpoch = 0;
+    let scoreAnimationFrame = 0;
+    let toastTimer = 0;
+    const copyRestoreTimers = new WeakMap();
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const jobList = document.getElementById("jobList");
+    const runMeta = document.getElementById("runMeta");
+    const jobCount = document.getElementById("jobCount");
+    const resumeTitle = document.getElementById("resumeTitle");
+    const scoreBadge = document.getElementById("scoreBadge");
+    const jobLink = document.getElementById("jobLink");
+    const pdfLink = document.getElementById("pdfLink");
+    const atsLink = document.getElementById("atsLink");
+    const resumeView = document.getElementById("resumeView");
+    const detailView = document.getElementById("detailView");
+    const jobSearch = document.getElementById("jobSearch");
+    const tierFilter = document.getElementById("tierFilter");
+    const resumeScroll = document.getElementById("resumeScroll");
+    const detailScroll = document.getElementById("detailScroll");
+    const inspectorActions = document.getElementById("inspectorActions");
+    const toast = document.getElementById("toast");
+    const mermaidDialog = document.getElementById("mermaidDialog");
+    const mermaidModalViewport = document.getElementById("mermaidModalViewport");
+    const mermaidModalCanvas = document.getElementById("mermaidModalCanvas");
+    const mermaidZoomValue = document.getElementById("mermaidZoomValue");
+    const mermaidZoomIn = document.getElementById("mermaidZoomIn");
+    const mermaidZoomOut = document.getElementById("mermaidZoomOut");
+    const mermaidResetView = document.getElementById("mermaidResetView");
+    const mermaidDialogClose = document.getElementById("mermaidDialogClose");
+    let mermaidObjectUrl = "";
+    const mermaidViewState = { scale: 1, x: 0, y: 0, dragging: false, startX: 0, startY: 0, originX: 0, originY: 0 };
+
+    const importedCount = data.state?.imported?.length || 0;
+    const analyzedCount = data.state?.analyzed?.length || 0;
+    const tailoredCount = data.state?.tailored?.length || 0;
+    const auditText = data.resumeAudit
+      ? ` · 简历审计 ${data.resumeAudit.summary.errors} 严重 / ${data.resumeAudit.summary.warnings} 警告`
+      : "";
+    runMeta.textContent = `批次 ${data.runId} · ${data.state?.phase || "未知阶段"} · 已导入 ${importedCount} / 已分析 ${analyzedCount} / 已定制 ${tailoredCount}${auditText}`;
+
+    function textOrEmpty(value) {
+      const normalized = String(value || "").trim();
+      return normalized || "暂无内容";
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function inlineMarkdown(value) {
+      return escapeHtml(value)
+        .replace(/`([^`]+)`/g, "<code>$1</code>")
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    }
+
+    function markdownToHtml(markdown) {
+      const source = textOrEmpty(markdown)
+        .replace(/<!--[\s\S]*?-->/g, "")
+        .replace(/^\s*-?\s*(?:证据\s*ID|候选人证据)[：:].*$(?:\r?\n)?/gim, "");
+      const mermaidBlocks = [];
+      const protectedSource = source.replace(/```mermaid\s*([\s\S]*?)```/g, (_, code) => {
+        const index = mermaidBlocks.push(code.trim()) - 1;
+        return `MERMAID_BLOCK_${index}`;
+      });
+      const lines = protectedSource.split(/\r?\n/);
+      const output = [];
+      let listType = "";
+      let tableRows = [];
+
+      function closeList() {
+        if (listType) output.push(`</${listType}>`);
+        listType = "";
+      }
+
+      function flushTable() {
+        if (!tableRows.length) return;
+        const useful = tableRows.filter((row, index) => index !== 1 || !row.every((cell) => /^:?-+:?$/.test(cell)));
+        output.push("<table>");
+        useful.forEach((row, index) => {
+          const tag = index === 0 ? "th" : "td";
+          output.push(`<tr>${row.map((cell) => `<${tag}>${inlineMarkdown(cell.trim())}</${tag}>`).join("")}</tr>`);
+        });
+        output.push("</table>");
+        tableRows = [];
+      }
+
+      for (const line of lines) {
+        const heading = line.match(/^(#{1,3})\s+(.+)$/);
+        const bullet = line.match(/^[-*]\s+(.+)$/);
+        const ordered = line.match(/^\d+\.\s+(.+)$/);
+        const quote = line.match(/^>\s*(.*)$/);
+        const table = line.trim().startsWith("|") && line.trim().endsWith("|");
+        const mermaid = line.match(/^MERMAID_BLOCK_(\d+)$/);
+
+        if (!table) flushTable();
+        if (table) {
+          closeList();
+          tableRows.push(line.trim().slice(1, -1).split("|"));
+        } else if (heading) {
+          closeList();
+          output.push(`<h${heading[1].length}>${inlineMarkdown(heading[2])}</h${heading[1].length}>`);
+        } else if (bullet || ordered) {
+          const nextType = bullet ? "ul" : "ol";
+          if (listType !== nextType) {
+            closeList();
+            listType = nextType;
+            output.push(`<${listType}>`);
+          }
+          output.push(`<li>${inlineMarkdown((bullet || ordered)[1])}</li>`);
+        } else if (mermaid) {
+          closeList();
+          const code = mermaidBlocks[Number(mermaid[1])] || "";
+          const encoded = encodeURIComponent(code);
+          output.push(`<div class="mermaid-card" data-mermaid-source="${encoded}"><div class="mermaid-toolbar"><span class="mermaid-state">图表预览</span><div class="mermaid-actions"><button class="expand-mermaid" type="button">放大查看</button><button class="copy-mermaid" type="button">复制 Mermaid</button></div></div><div class="mermaid-shell"><div class="mermaid-loading" role="status">正在绘制图表…</div><div class="mermaid">${escapeHtml(code)}</div></div></div>`);
+        } else if (quote) {
+          closeList();
+          output.push(`<blockquote>${inlineMarkdown(quote[1])}</blockquote>`);
+        } else if (line.trim()) {
+          closeList();
+          output.push(`<p>${inlineMarkdown(line)}</p>`);
+        }
+      }
+      closeList();
+      flushTable();
+      return output.join("");
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      try {
+        textarea.select();
+        return document.execCommand("copy");
+      } catch {
+        return false;
+      } finally {
+        textarea.remove();
+      }
+    }
+
+    function showToast(message, kind = "success") {
+      window.clearTimeout(toastTimer);
+      toast.classList.remove("is-visible");
+      toast.dataset.kind = kind;
+      toast.textContent = message;
+      if (reducedMotionQuery.matches) {
+        toast.classList.add("is-visible");
+      } else {
+        requestAnimationFrame(() => toast.classList.add("is-visible"));
+      }
+      toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 1600);
+    }
+
+    async function copyText(text, button, successMessage) {
+      if (!text) return;
+      const copied = fallbackCopy(text);
+
+      const original = button.dataset.originalLabel || button.textContent;
+      button.dataset.originalLabel = original;
+      button.textContent = copied ? "已复制" : "复制失败";
+      button.dataset.status = copied ? "success" : "failed";
+      window.clearTimeout(copyRestoreTimers.get(button));
+      copyRestoreTimers.set(button, window.setTimeout(() => {
+        if (!button.isConnected) return;
+        button.textContent = original;
+        delete button.dataset.status;
+      }, 1500));
+      showToast(copied ? successMessage : "复制失败，请手动复制", copied ? "success" : "error");
+    }
+
+    function updateMermaidModalView() {
+      mermaidModalCanvas.style.setProperty("--modal-scale", mermaidViewState.scale);
+      mermaidModalCanvas.style.setProperty("--pan-x", `${mermaidViewState.x}px`);
+      mermaidModalCanvas.style.setProperty("--pan-y", `${mermaidViewState.y}px`);
+      mermaidZoomValue.textContent = `${Math.round(mermaidViewState.scale * 100)}%`;
+    }
+
+    function resetMermaidModalView() {
+      mermaidViewState.scale = 1;
+      mermaidViewState.x = 0;
+      mermaidViewState.y = 0;
+      updateMermaidModalView();
+    }
+
+    function changeMermaidZoom(delta) {
+      const next = Math.max(0.5, Math.min(3, Number((mermaidViewState.scale + delta).toFixed(2))));
+      mermaidViewState.scale = next;
+      updateMermaidModalView();
+    }
+
+    function closeMermaidDialog() {
+      if (mermaidDialog.open) mermaidDialog.close();
+    }
+
+    function openMermaidDialog(card) {
+      const svg = card?.querySelector(".mermaid svg");
+      if (!svg) {
+        showToast("当前图表尚未渲染完成，暂不可放大", "error");
+        return;
+      }
+      if (mermaidObjectUrl) URL.revokeObjectURL(mermaidObjectUrl);
+      const svgSource = new XMLSerializer().serializeToString(svg);
+      mermaidObjectUrl = URL.createObjectURL(new Blob([svgSource], { type: "image/svg+xml" }));
+      const image = document.createElement("img");
+      image.alt = "放大的 Mermaid 图表";
+      image.src = mermaidObjectUrl;
+      image.addEventListener("load", resetMermaidModalView, { once: true });
+      mermaidModalCanvas.replaceChildren(image);
+      resetMermaidModalView();
+      if (!mermaidDialog.open) mermaidDialog.showModal();
+    }
+
+    function bindMermaidDialog() {
+      mermaidZoomIn.addEventListener("click", () => changeMermaidZoom(0.2));
+      mermaidZoomOut.addEventListener("click", () => changeMermaidZoom(-0.2));
+      mermaidResetView.addEventListener("click", resetMermaidModalView);
+      mermaidDialogClose.addEventListener("click", closeMermaidDialog);
+      mermaidDialog.addEventListener("close", () => {
+        mermaidModalViewport.classList.remove("is-dragging");
+        mermaidViewState.dragging = false;
+        if (mermaidObjectUrl) URL.revokeObjectURL(mermaidObjectUrl);
+        mermaidObjectUrl = "";
+        mermaidModalCanvas.replaceChildren();
+      });
+      mermaidModalViewport.addEventListener("wheel", (event) => {
+        event.preventDefault();
+        changeMermaidZoom(event.deltaY < 0 ? 0.16 : -0.16);
+      }, { passive: false });
+      mermaidModalViewport.addEventListener("pointerdown", (event) => {
+        if (!mermaidModalCanvas.firstElementChild) return;
+        mermaidViewState.dragging = true;
+        mermaidViewState.startX = event.clientX;
+        mermaidViewState.startY = event.clientY;
+        mermaidViewState.originX = mermaidViewState.x;
+        mermaidViewState.originY = mermaidViewState.y;
+        mermaidModalViewport.classList.add("is-dragging");
+        mermaidModalViewport.setPointerCapture?.(event.pointerId);
+      });
+      mermaidModalViewport.addEventListener("pointermove", (event) => {
+        if (!mermaidViewState.dragging) return;
+        mermaidViewState.x = mermaidViewState.originX + event.clientX - mermaidViewState.startX;
+        mermaidViewState.y = mermaidViewState.originY + event.clientY - mermaidViewState.startY;
+        updateMermaidModalView();
+      });
+      const stopMermaidDrag = (event) => {
+        if (!mermaidViewState.dragging) return;
+        mermaidViewState.dragging = false;
+        mermaidModalViewport.classList.remove("is-dragging");
+        if (event?.pointerId !== undefined && mermaidModalViewport.hasPointerCapture?.(event.pointerId)) {
+          mermaidModalViewport.releasePointerCapture(event.pointerId);
+        }
+      };
+      mermaidModalViewport.addEventListener("pointerup", stopMermaidDrag);
+      mermaidModalViewport.addEventListener("pointercancel", stopMermaidDrag);
+    }
+
+    function bindMermaidCopyButtons() {
+      detailView.querySelectorAll(".copy-mermaid").forEach((button) => {
+        button.addEventListener("click", () => {
+          const card = button.closest(".mermaid-card");
+          const source = card?.dataset.mermaidSource ? decodeURIComponent(card.dataset.mermaidSource) : "";
+          return copyText(source, button, "Mermaid 源码已复制");
+        });
+      });
+      detailView.querySelectorAll(".expand-mermaid").forEach((button) => {
+        button.addEventListener("click", () => openMermaidDialog(button.closest(".mermaid-card")));
+      });
+    }
+
+    function tierClass(score) {
+      if (score >= 80) return "strong";
+      if (score >= 65) return "viable";
+      if (score >= 50) return "stretch";
+      return "skip";
+    }
+
+    function numericScore(value) {
+      if (value === null || value === undefined || value === "") return null;
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    function scoreText(value) {
+      const parsed = numericScore(value);
+      return parsed === null ? "--" : String(Math.round(parsed));
+    }
+
+    function filteredJobs() {
+      const query = jobSearch.value.trim().toLowerCase();
+      return data.jobs.filter((item) => {
+        const searchable = `${item.job.company || ""} ${item.job.title || ""}`.toLowerCase();
+        return (!query || searchable.includes(query))
+          && (!tierFilter.value || item.tier === tierFilter.value);
+      });
+    }
+
+    function renderList() {
+      jobList.innerHTML = "";
+      const jobs = filteredJobs();
+      jobCount.textContent = `显示 ${jobs.length} / ${data.jobs.length} 个岗位`;
+      if (!jobs.length) {
+        jobList.innerHTML = '<div class="empty">没有符合条件的岗位。</div>';
+        return;
+      }
+      if (!jobs.some((item) => item.id === selectedId)) selectedId = jobs[0].id;
+      jobs.forEach((item) => {
+        const button = document.createElement("button");
+        button.className = "job";
+        button.type = "button";
+        button.setAttribute("aria-current", item.id === selectedId ? "true" : "false");
+        button.setAttribute("aria-label", `${item.job.company || "未知公司"}，${item.job.title || "未知职位"}，匹配分 ${scoreText(item.score)}`);
+        button.innerHTML = `
+          <div class="job-top">
+            <span class="job-company">${escapeHtml(item.job.company || "未知公司")}</span>
+            <span class="score ${tierClass(numericScore(item.score) || 0)}">${scoreText(item.score)}</span>
+          </div>
+          <div class="job-title">${escapeHtml(item.job.title || "未知职位")}</div>
+          <div class="job-meta">
+            <span>${escapeHtml([item.job.location, item.job.salary].filter(Boolean).join(" · ") || "岗位信息待确认")}</span>
+            <span class="tier-label">${escapeHtml(item.tierLabel || "待评估")}</span>
+          </div>
+        `;
+        button.addEventListener("click", () => {
+          if (selectedId === item.id) return;
+          selectedId = item.id;
+          render("job");
+        });
+        jobList.appendChild(button);
+      });
+    }
+
+    function listHtml(items, emptyText, previewLimit = 3) {
+      const values = Array.isArray(items) ? items : [];
+      if (!values.length) return `<div class="subtle">${escapeHtml(emptyText)}</div>`;
+      const preview = values.slice(0, previewLimit);
+      const remainder = values.slice(previewLimit);
+      const previewHtml = `<ul>${preview.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+      if (!remainder.length) return previewHtml;
+      return `${previewHtml}<details class="more-items"><summary>查看其余 ${remainder.length} 项</summary><ul>${remainder.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></details>`;
+    }
+
+    function renderScoreSummary(item) {
+      const dimensions = [
+        ["核心能力匹配", item.scores.hard_skills],
+        ["经验深度", item.scores.experience_depth],
+        ["业务方向匹配", item.scores.domain_fit],
+        ["协作与软性匹配", item.scores.soft_fit],
+        ["岗位质量", item.scores.job_quality]
+      ];
+      const total = numericScore(item.score);
+      const matched = item.evidence?.matched || [];
+      const missing = item.evidence?.missing || [];
+      const risks = item.assessment?.risks || [];
+      const questions = item.assessment?.questions || [];
+      const confirmations = item.inputConfirmation || [];
+      const summaryCards = [
+        ["主要风险", risks, "暂无补充风险", "risk"],
+        ["当前缺失", missing, "未发现明确缺失项", "missing"],
+        ["已匹配能力", matched, "暂无明确匹配证据", "match"],
+        ["需要确认", questions, "暂无待确认问题", "confirm"]
+      ];
+      return `
+        <div class="score-summary">
+          <div class="score-hero">
+            <div>
+              <span class="score-eyebrow">候选人匹配度</span>
+              <div class="score-total-line">
+                <strong class="score-summary-total" data-score-target="${total === null ? "" : total}">${total === null ? "--" : (reducedMotionQuery.matches ? Math.round(total) : 0)}</strong>
+                <span class="score-denominator">/ 100</span>
+              </div>
+            </div>
+            <span class="tier-pill ${tierClass(total || 0)}">${escapeHtml(item.tierLabel || "待评估")}</span>
+          </div>
+          <p class="score-caption">候选人匹配分基于四项能力判断；岗位质量单列，不会抬高匹配度。</p>
+          <div class="dimension-grid">
+            ${dimensions.map(([label, value], index) => {
+              const parsed = numericScore(value);
+              const ratio = parsed === null ? 0 : Math.max(0, Math.min(100, parsed)) / 100;
+              return `
+                <div class="dimension-row" style="--score-ratio:${ratio}; --progress-delay:${index * 55}ms">
+                  <span>${label}</span>
+                  <strong class="dimension-value">${parsed === null ? "—" : Math.round(parsed)}</strong>
+                  <div class="score-progress" aria-hidden="true"><span class="score-progress-fill"></span></div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+        <div class="evidence-grid">
+          ${summaryCards.map(([label, values, emptyText, kind], index) => `
+            <div class="evidence-group" data-kind="${kind}" style="--summary-delay:${index * 55}ms">
+              <h3><span>${label}</span><span class="evidence-count">${values.length} 项</span></h3>
+              ${listHtml(values, emptyText)}
+            </div>
+          `).join("")}
+          ${confirmations.length
+            ? `<div class="evidence-group" data-kind="confirm" data-wide="true" style="--summary-delay:220ms"><h3><span>截图待确认字段</span><span class="evidence-count">${confirmations.length} 项</span></h3>${listHtml(confirmations, "暂无")}</div>`
+            : ""}
+        </div>
+      `;
+    }
+
+    function renderTabs() {
+      const item = data.jobs.find((job) => job.id === selectedId);
+      if (selectedTab === "coverLetter" && !item?.coverLetter) selectedTab = "analysis";
+      document.querySelectorAll(".tab").forEach((button) => {
+        if (button.dataset.tab === "coverLetter") {
+          button.hidden = !item?.coverLetter;
+        }
+        const active = button.dataset.tab === selectedTab;
+        button.setAttribute("aria-selected", active ? "true" : "false");
+        button.tabIndex = active ? 0 : -1;
+      });
+      const visibleTabs = Array.from(document.querySelectorAll(".tab:not([hidden])"));
+      document.querySelector(".tabs").style.gridTemplateColumns = `repeat(${Math.max(1, visibleTabs.length)}, minmax(0, 1fr))`;
+      const activeTab = document.querySelector(`.tab[data-tab="${selectedTab}"]`);
+      detailView.setAttribute("aria-labelledby", activeTab?.id || "tab-analysis");
+    }
+
+    function renderMotionContent(target, html) {
+      target.innerHTML = `<div class="content-motion">${html}</div>`;
+      const motionNode = target.firstElementChild;
+      if (reducedMotionQuery.matches) {
+        motionNode?.classList.remove("content-motion");
+      } else {
+        motionNode?.addEventListener("animationend", () => motionNode.classList.remove("content-motion"), { once: true });
+      }
+    }
+
+    function renderResume(item, cause) {
+      if (!item) {
+        renderMotionContent(resumeView, '<div class="empty">暂无可展示的定制简历。</div>');
+        return;
+      }
+      resumeTitle.textContent = `${item.job.company || "未知公司"} · ${item.job.title || "未知职位"}`;
+      const total = numericScore(item.score);
+      scoreBadge.textContent = scoreText(total);
+      scoreBadge.className = `score ${tierClass(total || 0)}`;
+      scoreBadge.setAttribute("aria-label", total === null ? "当前岗位暂无匹配分" : `当前岗位匹配分 ${Math.round(total)}`);
+      jobLink.hidden = !item.job.url;
+      jobLink.href = item.job.url || "#";
+      pdfLink.hidden = !item.pdf?.filename;
+      if (item.pdf?.filename) {
+        pdfLink.href = `pdf/${encodeURIComponent(item.pdf.filename)}`;
+        pdfLink.download = item.pdf.filename;
+        pdfLink.title = `下载 ${item.pdf.filename}`;
+        pdfLink.setAttribute("aria-label", `导出当前岗位 PDF 简历：${item.pdf.filename}`);
+      } else {
+        pdfLink.removeAttribute("href");
+        pdfLink.removeAttribute("download");
+        pdfLink.removeAttribute("title");
+        pdfLink.setAttribute("aria-label", "当前岗位尚未生成 PDF 简历");
+      }
+      atsLink.href = `jobs/${encodeURIComponent(item.id)}/resume.html`;
+      const resumeHtml = item.resume
+        ? markdownToHtml(item.resume)
+        : '<div class="empty">该岗位尚未生成定制简历。</div>';
+      renderMotionContent(resumeView, resumeHtml);
+      if (cause === "job") resumeScroll.scrollTo({ top: 0, behavior: "auto" });
+    }
+
+    function extractOpenerMessage(markdown) {
+      const source = String(markdown || "");
+      const heading = /^##\s+可直接发送\s*$/m.exec(source);
+      if (!heading) return "";
+      const remaining = source.slice(heading.index + heading[0].length);
+      const nextHeading = remaining.search(/\n##\s+/);
+      const message = (nextHeading === -1 ? remaining : remaining.slice(0, nextHeading)).trim();
+      return message
+        .trim()
+        .replace(/^[-*]\s+/gm, "")
+        .replace(/\*\*/g, "")
+        .replace(/`/g, "")
+        .replace(/\n{3,}/g, "\n\n");
+    }
+
+    function renderInspectorActions(item) {
+      inspectorActions.innerHTML = "";
+      if (selectedTab !== "opener") return;
+      const message = extractOpenerMessage(item?.opener);
+      if (!message) return;
+      const button = document.createElement("button");
+      button.className = "action-button";
+      button.type = "button";
+      button.textContent = "复制开场白";
+      button.addEventListener("click", () => copyText(message, button, "HR 开场白已复制"));
+      inspectorActions.appendChild(button);
+    }
+
+    function enhanceOptimizationItems() {
+      const headings = Array.from(detailView.querySelectorAll(".content-motion > h3"));
+      headings.forEach((heading, index) => {
+        const title = heading.textContent.trim();
+        const nodes = [];
+        let next = heading.nextSibling;
+        while (next) {
+          if (next.nodeType === Node.ELEMENT_NODE && ["H2", "H3"].includes(next.tagName)) break;
+          nodes.push(next);
+          next = next.nextSibling;
+        }
+
+        let section = heading.previousElementSibling;
+        while (section && section.tagName !== "H2") section = section.previousElementSibling;
+        const needsConfirmation = /^\d+[.、]/.test(title) || /尚未|确认|缺口/.test(section?.textContent || "");
+        const priority = needsConfirmation ? "待确认" : "已落实";
+        const conclusionNode = nodes.find((node) => node.nodeType === Node.ELEMENT_NODE && node.textContent.trim());
+        const conclusion = (conclusionNode?.textContent || "点击查看具体依据与真实性边界").trim().replace(/\s+/g, " ");
+        const shortConclusion = conclusion.length > 72 ? `${conclusion.slice(0, 72)}…` : conclusion;
+        const contentId = `optimization-${renderEpoch}-${index}`;
+
+        const item = document.createElement("article");
+        item.className = "optimization-item";
+        const button = document.createElement("button");
+        button.className = "optimization-toggle";
+        button.type = "button";
+        button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-controls", contentId);
+        button.innerHTML = `<span class="optimization-title">${escapeHtml(title)}</span><span class="optimization-chevron" aria-hidden="true">⌄</span><span class="optimization-summary"><span class="optimization-priority">${priority}</span> · ${escapeHtml(shortConclusion)}</span>`;
+
+        const content = document.createElement("div");
+        content.className = "optimization-content";
+        content.id = contentId;
+        const inner = document.createElement("div");
+        inner.className = "optimization-content-inner";
+        const body = document.createElement("div");
+        body.className = "optimization-content-body";
+        nodes.forEach((node) => body.appendChild(node));
+        inner.appendChild(body);
+        content.appendChild(inner);
+        item.append(button, content);
+        heading.replaceWith(item);
+
+        button.addEventListener("click", () => {
+          const open = !item.classList.contains("is-open");
+          item.classList.toggle("is-open", open);
+          button.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+      });
+    }
+
+    function renderInspector(item, cause) {
+      renderEpoch += 1;
+      const epoch = renderEpoch;
+      window.resumeTailorRenderEpoch = epoch;
+      window.resumeTailorSelectedTab = selectedTab;
+      renderInspectorActions(item);
+      if (!item) {
+        renderMotionContent(detailView, '<div class="empty">暂无分析内容。</div>');
+        return;
+      }
+
+      let detailHtml = "";
+      if (selectedTab === "analysis") {
+        detailHtml = `${renderScoreSummary(item)}<details class="analysis-details"><summary>展开完整分析依据</summary><div>${markdownToHtml(item.analysis)}</div></details>`;
+      } else if (item[selectedTab]) {
+        detailHtml = markdownToHtml(item[selectedTab]);
+      } else {
+        detailHtml = '<div class="empty">当前岗位暂未生成这部分内容。</div>';
+      }
+      renderMotionContent(detailView, detailHtml);
+      detailScroll.scrollTo({ top: 0, behavior: "auto" });
+
+      if (selectedTab === "changelog") enhanceOptimizationItems();
+      bindMermaidCopyButtons();
+      if (selectedTab === "diagrams") {
+        if (window.renderResumeTailorMermaid) {
+          window.renderResumeTailorMermaid(epoch);
+        } else {
+          detailView.querySelectorAll(".mermaid-card").forEach((card) => card.classList.add("is-loading"));
+        }
+      }
+
+      if (selectedTab === "analysis") {
+        playProgressAnimations(epoch);
+      }
+      if (cause === "tab") {
+        const activeTab = document.querySelector(`.tab[data-tab="${selectedTab}"]`);
+        activeTab?.focus({ preventScroll: true });
+      }
+    }
+
+    function animateScore(item) {
+      window.cancelAnimationFrame(scoreAnimationFrame);
+      scoreAnimationFrame = 0;
+      const target = numericScore(item?.score);
+      const nodes = [scoreBadge, ...detailView.querySelectorAll(".score-summary-total")];
+      if (target === null) {
+        nodes.forEach((node) => { node.textContent = "--"; });
+        return;
+      }
+
+      if (reducedMotionQuery.matches) {
+        nodes.forEach((node) => { node.textContent = String(Math.round(target)); });
+        return;
+      }
+
+      const expectedId = selectedId;
+      const duration = 720;
+      const start = performance.now();
+      nodes.forEach((node) => { node.textContent = "0"; });
+      const step = (now) => {
+        if (selectedId !== expectedId) return;
+        const progress = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const displayed = progress >= 1 ? Math.round(target) : Math.round(target * eased);
+        nodes.forEach((node) => { node.textContent = String(displayed); });
+        if (progress < 1) {
+          scoreAnimationFrame = requestAnimationFrame(step);
+        } else {
+          scoreAnimationFrame = 0;
+          nodes.forEach((node) => { node.textContent = String(Math.round(target)); });
+        }
+      };
+      scoreAnimationFrame = requestAnimationFrame(step);
+    }
+
+    function playProgressAnimations(epoch) {
+      const summary = detailView.querySelector(".score-summary");
+      if (!summary) return;
+      summary.classList.remove("progress-ready");
+      if (reducedMotionQuery.matches) {
+        summary.classList.add("progress-ready");
+        return;
+      }
+      requestAnimationFrame(() => {
+        if (epoch !== renderEpoch || !summary.isConnected) return;
+        requestAnimationFrame(() => {
+          if (epoch !== renderEpoch || !summary.isConnected) return;
+          summary.classList.add("progress-ready");
+        });
+      });
+    }
+
+    function activateTab(tabName, focusTab = true) {
+      if (tabName === selectedTab) {
+        if (tabName === "analysis") {
+          const item = data.jobs.find((job) => job.id === selectedId);
+          animateScore(item);
+          playProgressAnimations(renderEpoch);
+        }
+        return;
+      }
+      selectedTab = tabName;
+      renderTabs();
+      const item = data.jobs.find((job) => job.id === selectedId);
+      renderInspector(item, focusTab ? "tab" : "keyboard");
+      if (selectedTab === "analysis") animateScore(item);
+    }
+
+    document.querySelectorAll(".tab").forEach((button) => {
+      button.addEventListener("click", () => activateTab(button.dataset.tab));
+      button.addEventListener("keydown", (event) => {
+        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+        const tabs = Array.from(document.querySelectorAll('.tab:not([hidden])'));
+        const current = tabs.indexOf(button);
+        let next = current;
+        if (event.key === "ArrowRight") next = (current + 1) % tabs.length;
+        if (event.key === "ArrowLeft") next = (current - 1 + tabs.length) % tabs.length;
+        if (event.key === "Home") next = 0;
+        if (event.key === "End") next = tabs.length - 1;
+        event.preventDefault();
+        activateTab(tabs[next].dataset.tab, false);
+        tabs[next].focus();
+      });
+    });
+
+    function applyFilters() {
+      const previousId = selectedId;
+      renderList();
+      if (previousId !== selectedId) {
+        renderTabs();
+        const item = data.jobs.find((job) => job.id === selectedId);
+        renderResume(item, "job");
+        renderInspector(item, "job");
+        animateScore(item);
+      }
+    }
+
+    jobSearch.addEventListener("input", applyFilters);
+    tierFilter.addEventListener("change", applyFilters);
+
+    function render(cause = "initial") {
+      renderList();
+      renderTabs();
+      const item = data.jobs.find((job) => job.id === selectedId);
+      renderResume(item, cause);
+      renderInspector(item, cause);
+      animateScore(item);
+    }
+
+    bindMermaidDialog();
+    render("initial");
+  </script>
+  <script type="module">
+    let mermaidApi = null;
+    let mermaidInitialized = false;
+    const mermaidPromise = import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")
+      .then((module) => {
+        mermaidApi = module.default;
+        if (!mermaidInitialized) {
+          mermaidApi.initialize({
+            startOnLoad: false,
+            theme: "neutral",
+            securityLevel: "strict",
+            flowchart: { htmlLabels: false, curve: "basis" },
+            themeVariables: {
+              primaryColor: "#e8f4f0",
+              primaryTextColor: "#17211f",
+              primaryBorderColor: "#9fc8ba",
+              lineColor: "#7b8c86",
+              secondaryColor: "#f1f5f3",
+              tertiaryColor: "#fbf3e3",
+              fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif"
+            }
+          });
+          mermaidInitialized = true;
+        }
+        return mermaidApi;
+      })
+      .catch(() => null);
+
+    function showMermaidFallback(card) {
+      if (!card?.isConnected) return;
+      const source = card.dataset.mermaidSource ? decodeURIComponent(card.dataset.mermaidSource) : "";
+      const node = card.querySelector(".mermaid");
+      const state = card.querySelector(".mermaid-state");
+      if (node) {
+        node.removeAttribute("data-processed");
+        node.textContent = source || "暂无 Mermaid 源码";
+      }
+      if (state) state.textContent = "图表组件离线，已保留源码";
+      card.classList.remove("is-loading", "is-rendered");
+      card.classList.add("is-fallback");
+    }
+
+    window.renderResumeTailorMermaid = async (epoch = window.resumeTailorRenderEpoch) => {
+      const cards = Array.from(document.querySelectorAll(".mermaid-card"));
+      if (!cards.length) return;
+      cards.forEach((card) => {
+        card.classList.remove("is-rendered", "is-fallback");
+        card.classList.add("is-loading");
+        const state = card.querySelector(".mermaid-state");
+        if (state) state.textContent = "正在生成图表";
+      });
+
+      const api = await mermaidPromise;
+      const activeCards = cards.filter((card) => card.isConnected && epoch === window.resumeTailorRenderEpoch);
+      if (!api) {
+        activeCards.forEach(showMermaidFallback);
+        return;
+      }
+
+      for (const card of activeCards) {
+        const node = card.querySelector(".mermaid:not([data-processed])");
+        if (!node) continue;
+        try {
+          await api.run({ nodes: [node] });
+          if (!card.isConnected || epoch !== window.resumeTailorRenderEpoch) continue;
+          const state = card.querySelector(".mermaid-state");
+          if (state) state.textContent = "图表预览";
+          card.classList.remove("is-loading", "is-fallback");
+          card.classList.add("is-rendered");
+        } catch {
+          showMermaidFallback(card);
+        }
+      }
+    };
+
+    if (window.resumeTailorSelectedTab === "diagrams") {
+      window.renderResumeTailorMermaid(window.resumeTailorRenderEpoch);
+    }
+  </script>
+</body>
+</html>

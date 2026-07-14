@@ -1,0 +1,25 @@
+{
+  "name": "resume-tailor",
+  "version": "0.6.0",
+  "description": "Local-first, evidence-driven resume tailoring pipeline",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "prepare": "node scripts/prepare_resume.mjs",
+    "diagram": "node scripts/prepare_diagram.mjs",
+    "ats-html": "node scripts/build_ats_html.mjs",
+    "pdf": "node scripts/build_pdfs.mjs",
+    "pipeline": "node scripts/run_pipeline.mjs",
+    "cover-letter": "node scripts/cover_letter.mjs",
+    "screenshot-import": "node scripts/import_screenshot_job.mjs",
+    "diff": "node scripts/generate_diffs.mjs",
+    "validate": "node scripts/validate_run.mjs",
+    "report": "node scripts/build_report.mjs",
+    "release:audit": "node scripts/audit_release.mjs",
+    "release:export": "node scripts/export_public_snapshot.mjs"
+  }
+}

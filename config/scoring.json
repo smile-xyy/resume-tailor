@@ -1,0 +1,16 @@
+{
+  "version": "3.9.0",
+  "weights": {
+    "hard_skills": 0.2,
+    "experience_depth": 0.2,
+    "domain_fit": 0.2,
+    "soft_fit": 0.2,
+    "job_quality": 0.2
+  },
+  "deep_analysis_top_n": 5,
+  "tiers": {
+    "strong": 80,
+    "viable": 65,
+    "stretch": 50
+  }
+}
